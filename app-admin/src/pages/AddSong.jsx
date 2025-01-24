@@ -22,7 +22,7 @@ const AddSong = () => {
         </div>
 
         <div className='flex flex-col gap-2.5'>
-            <p>Song name</p>
+            <p>Song Name</p>
 
         </div>
     </form>
