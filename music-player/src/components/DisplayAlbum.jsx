@@ -21,9 +21,9 @@ const DisplayAlbum = () => {
             <h4>{albumData.desc}</h4>
             <p className='mt-1'>
               <img className='inline-block w-5' src={assets.spotify_logo} alt="" />
-              <b>Spotify</b>
+              <b>Music</b>
               . 1,234,675 likes
-              . <b>50 songs</b>
+              . <b>60 songs</b>
               about 2 hr 30 min
             </p>
         </div>
