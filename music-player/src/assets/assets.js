@@ -24,7 +24,7 @@ import spotify_logo from './spotify_logo.png'
 import clock_icon from './clock_icon.png'
 import img1 from './img1.jpg'
 import img2 from './img2.jpg'
-import img3 from './img3.jpg'
+import img3 from './img3.jpeg'
 import img4 from './img4.jpg'
 import img5 from './img5.jpg'
 import img6 from './img6.jpg'
@@ -72,21 +72,21 @@ export const assets = {
 export const albumsData = [
     {   
         id:0,
-        name: "Top 50 Global",
+        name: "Tasha Cobba",
         image: img8,
-        desc:"Your weekly update of the most played tracks",
+        desc:"There is a power in the name of JESUS",
         bgColor:"#2a4365"
     },
     {   
         id:1,
-        name: "Top 50 India",
+        name: "musse",
         image: img9,
         desc:"Your weekly update of the most played tracks",
         bgColor:"#22543d"
     },
     {   
         id:2,
-        name: "Trending India",
+        name: " Global",
         image: img10,
         desc:"Your weekly update of the most played tracks",
         bgColor:"#742a2a"
@@ -101,13 +101,13 @@ export const albumsData = [
     {   
         id:4,
         name: "Mega Hits",
-        image: img11,
+        image: img4,
         desc:"Your weekly update of the most played tracks",
         bgColor:"#234e52"
     },
     {   
         id:5,
-        name: "Happy Favorites",
+        name: "Smile Favorites",
         image: img15,
         desc:"Your weekly update of the most played tracks",
         bgColor:"#744210"
@@ -117,27 +117,27 @@ export const albumsData = [
 export const songsData = [
     {
         id:0,
-        name: "Song One",
+        name: "Tasha Cobba",
         image: img1,
         file:song1,
-        desc:"Put a smile on your face with these happy tunes",
-        duration:"3:00"
+        desc:"There is a power in the name of JESUS",
+        duration:"4:15"
     },
     {
         id:1,
-        name: "Song Two",
+        name: "Alan Jackson",
         image: img2,
         file:song2,
-        desc:"Put a smile on your face with these happy tunes",
-        duration:"2:20"
+        desc:"Are you washed in the BLOOD of the LAMB?",
+        duration:"3:43"
     },
     {
         id:2,
-        name: "Song Three",
+        name: "Gateway Worship",
         image: img3,
         file:song3,
-        desc:"Put a smile on your face with these happy tunes",
-        duration:"2:32"
+        desc:"JESUS paid it ALL",
+        duration:"5:49"
     },
     {
         id:3,

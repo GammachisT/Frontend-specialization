@@ -4,78 +4,92 @@ import { songsData } from "../assets/assets";
 export const PlayerContext = createContext();
 
 const PlayerContextProvider = (props) => {
-
     const audioRef = useRef();
     const seekBg = useRef();
     const seekBar = useRef();
 
     const [track, setTrack] = useState(songsData[0]);
     const [playStatus, setPlayStatus] = useState(false);
-    const [time, setTime] = useState({
-        currentTime:{
-            second:0,
-            minute:0
-        },
-        totalTime: {
-            second:0,
-            minute:0
-        }
-    })
+    const [time, setTime] = useState({ currentTime: { second: 0, minute: 0 }, totalTime: { second: 0, minute: 0 } });
+    const [shuffle, setShuffle] = useState(false); // Shuffle state
+    const [repeat, setRepeat] = useState(false); // Repeat state
 
     const play = () => {
         audioRef.current.play();
-        setPlayStatus(true)
-    }
+        setPlayStatus(true);
+    };
 
     const pause = () => {
         audioRef.current.pause();
-        setPlayStatus(false)
-    }
+        setPlayStatus(false);
+    };
 
     const playWithId = async (id) => {
         await setTrack(songsData[id]);
         await audioRef.current.play();
         setPlayStatus(true);
-    }
+    };
 
     const previous = async () => {
-        if (track.id>0) {
-            await setTrack(songsData[track.id-1]);
+        const newIndex = shuffle ? Math.floor(Math.random() * songsData.length) : track.id - 1;
+        if (newIndex >= 0) {
+            await setTrack(songsData[newIndex]);
             await audioRef.current.play();
             setPlayStatus(true);
         }
-    }
+    };
 
     const next = async () => {
-        if (track.id < songsData.length-1) {
-            await setTrack(songsData[track.id+1]);
+        const newIndex = shuffle ? Math.floor(Math.random() * songsData.length) : track.id + 1;
+        if (newIndex < songsData.length) {
+            await setTrack(songsData[newIndex]);
             await audioRef.current.play();
             setPlayStatus(true);
         }
-    }
+    };
 
-    const seekSong  = async (e) => {
-        audioRef.current.currentTime = ((e.nativeEvent.offsetX / seekBg.current.offsetWidth)*audioRef.current.duration)
-    }
+    const seekSong = async (e) => {
+        audioRef.current.currentTime = ((e.nativeEvent.offsetX / seekBg.current.offsetWidth) * audioRef.current.duration);
+    };
 
-    useEffect(()=>{
-        setTimeout(() => {
-            
-            audioRef.current.ontimeupdate = () => {
-                seekBar.current.style.width = (Math.floor(audioRef.current.currentTime / audioRef.current.duration*100))+"%";
-                setTime({
-                    currentTime: {
-                        second: Math.floor(audioRef.current.currentTime % 60),
-                        minute: Math.floor(audioRef.current.currentTime / 60)
-                    },
-                    totalTime: {
-                        second: Math.floor(audioRef.current.duration % 60),
-                        minute: Math.floor(audioRef.current.duration / 60)
-                    }
-                })
+    useEffect(() => {
+        const updateTime = () => {
+            seekBar.current.style.width = (Math.floor(audioRef.current.currentTime / audioRef.current.duration * 100)) + "%";
+            setTime({
+                currentTime: {
+                    second: Math.floor(audioRef.current.currentTime % 60),
+                    minute: Math.floor(audioRef.current.currentTime / 60)
+                },
+                totalTime: {
+                    second: Math.floor(audioRef.current.duration % 60),
+                    minute: Math.floor(audioRef.current.duration / 60)
+                }
+            });
+        };
+
+        audioRef.current.ontimeupdate = updateTime;
+
+        audioRef.current.onended = () => {
+            if (repeat) {
+                audioRef.current.currentTime = 0;
+                audioRef.current.play();
+            } else {
+                next();
             }
-        }, 1000);
-    }, [audioRef])
+        };
+
+        return () => {
+            audioRef.current.ontimeupdate = null;
+        };
+    }, [audioRef, track, repeat, next]);
+
+    const toggleShuffle = () => {
+        setShuffle(!shuffle);
+    };
+
+    const toggleRepeat = () => {
+        setRepeat(!repeat);
+    };
 
     const contextValue = {
         audioRef,
@@ -85,18 +99,25 @@ const PlayerContextProvider = (props) => {
         setTrack,
         playStatus,
         setPlayStatus,
-        time, setTime,
-        play, pause,
+        time,
+        setTime,
+        play,
+        pause,
         playWithId,
-        previous, next,
-        seekSong
-    }
+        previous,
+        next,
+        seekSong,
+        shuffle,
+        repeat,
+        toggleShuffle,
+        toggleRepeat
+    };
 
     return (
         <PlayerContext.Provider value={contextValue}>
             {props.children}
         </PlayerContext.Provider>
     );
-}
+};
 
 export default PlayerContextProvider;
