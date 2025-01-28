@@ -32,9 +32,9 @@ const Sidebar = () => {
                         <img className='w-5' src={assets.plus_icon} alt="" />
                     </div>
                 </div>
-                    <div className='p-4 bg-[#242424] m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 pl-4'>
+                    <div className='h-[87%] p-4 bg-[#242424] m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 pl-4'>
                         <h1>Create your first song playlist</h1>
-                        <FileUpload />
+                        < FileUpload />
                     </div>
                     
             </div>
