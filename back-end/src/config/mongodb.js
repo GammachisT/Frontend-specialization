@@ -1,12 +1,10 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
-const connectDB = async () => {
+const fileSchema = new mongoose.Schema({
+  url: { type: String, required: true },
+  public_id: { type: String, required: true },
+  type: { type: String, required: true }, // 'image' or 'audio'
+});
 
-    mongoose.connection.on('connected', () => {
-        console.log("connection established");
-    })
-
-    await mongoose.connect(`${process.env.MONGODB_URI}/spotify`);
-}
-
-export default connectDB;
+const File = mongoose.model('File', fileSchema);
+module.exports = File;

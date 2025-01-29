@@ -1,11 +1,39 @@
-import { addSong, listSong, removeSong } from "../controllers/songController.js";
-import express  from "express";
-import upload from "../middlewares/multer.js";
+import express from 'express';
+import mongoose from 'mongoose';
+import multer from 'multer';
+import songModel from './src/models/songModel.js'; // Adjust the path as necessary
 
-const songRouter = express.Router();
+const app = express();
 
-songRouter.post('/add',upload.fields([{name:'image', maxCount:1}, {name:'audio', maxCount:1}]),addSong);
-songRouter.get('/list',listSong);
-songRouter.post('/remove', removeSong);
+// Set up multer for file storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Make sure this directory exists
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname); // You can customize the filename here
+    },
+});
 
-export default songRouter;
+const upload = multer({ storage });
+
+// Upload route
+app.post('/upload', upload.single('file'), async (req, res) => {
+    try {
+        const newFile = new FileModel({
+            fileName: req.body.name || req.file.originalname, // Use the optional name or the original name
+            filePath: req.file.path,
+            fileType: req.file.mimetype,
+        });
+
+        await newFile.save();
+        res.status(200).json(newFile);
+    } catch (error) {
+        res.status(500).json({ error: 'File upload failed' });
+    }
+});
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => app.listen(5000, () => console.log('Server running on port 5000')))
+    .catch(err => console.error(err));
